@@ -1,28 +1,57 @@
-<template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<template lang="pug">
+	div(class="container" id="app")
+		the-header
+		the-search
+		the-result(
+			v-if="hasWeatherData"
+
+			:city-name="returnWeatherData.name"
+			:country-code="returnWeatherData.sys.country"
+			:weather-desc="returnWeatherData.weather[0].description"
+			:current-temp="returnWeatherData.main.temp"
+			:feels-like="returnWeatherData.main.feels_like"
+			:max-temp="returnWeatherData.main.temp_max"
+			:min-temp="returnWeatherData.main.temp_min"
+			:current-humidity="returnWeatherData.main.humidity"
+			:current-wind-speed="returnWeatherData.wind.speed"
+		)
+		the-error
+		the-footer
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+    import TheHeader from "@/components/TheHeader";
+    import TheSearch from "@/components/TheSearch";
+    import TheResult from "@/components/TheResult";
+    import TheError from "@/components/TheError";
+    import TheFooter from "@/components/TheFooter";
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+    import {mapGetters} from 'vuex';
+
+    export default {
+        name: 'App',
+        components: {
+            TheHeader,
+            TheSearch,
+            TheResult,
+            TheError,
+            TheFooter
+        },
+
+        computed: {
+            ...mapGetters([
+                "hasWeatherData",
+                "returnWeatherData",
+            ])
+        }
+    }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="less">
+	#app {
+		min-height: 100vh;
+
+		display: flex;
+		flex-direction: column;
+	}
 </style>
